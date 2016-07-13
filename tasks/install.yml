@@ -3,7 +3,7 @@
   apt:
     pkg: '{{ item }}'
     state: present
-  with_items: munin_packages
+  with_items: '{{ munin_packages }}'
 
 - name: Ensure directories exist
   file:
@@ -11,7 +11,7 @@
     state: directory
     owner: munin
     group: www-data
-    mode: '755'
+    mode: '0755'
   with_items:
     - '{{ munin_include_dir }}'
     - '{{ munin_db_dir }}'
