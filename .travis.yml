@@ -34,12 +34,15 @@ script:
   # Check the role/playbook's syntax.
   - "ansible-playbook -i tests/inventory tests/$SITE --syntax-check"
 
+  # Run prepare playbook
+  - "ansible-playbook -i tests/inventory tests/prepare.yml --connection=local --become"
+
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo"
+  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --become"
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
+    ansible-playbook -i tests/inventory tests/$SITE --connection=local --become
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
@@ -51,7 +54,7 @@ script:
   - curl http://munin:munin@localhost:8012/
 
 after_failure:
-  - ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
+  - ansible-playbook -i tests/inventory tests/$SITE --connection=local --become
   - cat /etc/motd
   - ansible --version
   - ansible-lint --version

@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  vars:
+    nginx_remove_default_vhost: false
+
+  roles:
+    - tschifftner.nginx
