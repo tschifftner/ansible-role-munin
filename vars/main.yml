@@ -1,0 +1,5 @@
+---
+munin_packages:
+  - python-passlib
+  - munin
+  - munin-plugins-extra

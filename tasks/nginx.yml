@@ -1,0 +1,9 @@
+---
+- name: Ensure nginx vhost is linked
+  template:
+    src: 'nginx.conf'
+    dest: '/etc/nginx/sites-enabled/munin-node.conf'
+    owner: root
+    group: root
+    mode: '644'
+  notify: restart nginx

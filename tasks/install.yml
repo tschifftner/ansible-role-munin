@@ -1,0 +1,46 @@
+---
+- name: Install munin
+  apt:
+    pkg: '{{ item }}'
+    state: present
+  with_items: munin_packages
+
+- name: Ensure directories exist
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: munin
+    group: www-data
+    mode: '755'
+  with_items:
+    - '{{ munin_include_dir }}'
+    - '{{ munin_db_dir }}'
+    - '{{ munin_html_dir }}'
+    - '{{ munin_log_dir }}'
+    - '{{ munin_run_dir }}'
+    - '{{ munin_tmp_dir }}'
+    - '{{ munin_static_dir }}'
+
+- name: Set munin configuration
+  template:
+    src: 'munin.conf'
+    dest: '/etc/munin/munin.conf'
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set munin hosts
+  template:
+    src: 'hosts.conf'
+    dest: '{{ munin_include_dir }}/hosts.conf'
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set munin user
+  htpasswd:
+    create: yes
+    name: '{{ munin_admin_user }}'
+    password: '{{ munin_admin_password }}'
+    path: /etc/munin/.htpasswd
+    state: present
