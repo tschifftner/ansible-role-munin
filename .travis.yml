@@ -51,8 +51,10 @@ script:
   - ansible-lint tests/$SITE
 
   # Make sure munin is installed.
+  - echo exit | telnet localhost 80 | grep 'Connected to localhost'
+
+  # Test if munin is accessible
   #- curl http://munin:munin@localhost:8012/
-  - telnet localhost 4949
 
 after_failure:
   - ansible-playbook -i tests/inventory tests/$SITE --connection=local --become
