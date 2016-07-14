@@ -50,8 +50,9 @@ script:
   # ansible-lint checks for best practice
   - ansible-lint tests/$SITE
 
-  # Make sure motd is installed.
-  - curl http://munin:munin@localhost:8012/
+  # Make sure munin is installed.
+  #- curl http://munin:munin@localhost:8012/
+  - telnet localhost 4949
 
 after_failure:
   - ansible-playbook -i tests/inventory tests/$SITE --connection=local --become
@@ -64,6 +65,8 @@ after_failure:
   - curl http://localhost/
   - curl http://munin:munin@localhost:8012/
   - sudo cat /etc/munin/.htpasswd
+  - sudo iptables -L
+  - telnet localhost 4949
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
