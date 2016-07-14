@@ -62,6 +62,8 @@ after_failure:
   - sudo service nginx status
   - sudo cat /etc/nginx/sites-enabled/munin-node.conf
   - curl http://localhost/
+  - curl http://munin:munin@localhost:8012/
+  - sudo cat /etc/munin/.htpasswd
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
