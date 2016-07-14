@@ -59,6 +59,9 @@ after_failure:
   - ansible --version
   - ansible-lint --version
   - ansible -i 127.0.0.1, -m setup all -c local
+  - sudo service nginx status
+  - sudo cat /etc/nginx/sites-enabled/munin-node.conf
+  - curl http://localhost/
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6

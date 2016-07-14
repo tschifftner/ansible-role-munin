@@ -4,7 +4,7 @@
   vars:
     munin_configure_nginx: true
     munin_nginx_listen: '8012'
-    munin_nginx_server_name: '{{ ansible_fqdn }}'
+    munin_nginx_server_name: 'localhost'
     munin_admin_user: munin
     munin_admin_password: munin
 
