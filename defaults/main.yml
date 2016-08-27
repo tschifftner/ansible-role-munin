@@ -13,7 +13,9 @@ munin_tmp_dir: /etc/munin/templates
 munin_static_dir: /etc/munin/static
 
 # Settings
-munin_max_processes: 12
+munin_max_processes: '{{ ansible_processor_vcpus | default(1) }}'
+munin_max_graph_jobs: '{{ ansible_processor_vcpus | default(1) }}'
+munin_max_cgi_graph_jobs: '{{ ansible_processor_vcpus | default(1) }}'
 
 # Hosts
 munin_hosts:
@@ -29,9 +31,22 @@ munin_alerts:
 
 munin_node_ingore_files: []
 
+# Nignx
 munin_configure_nginx: true
 munin_nginx_listen: '8012'
 munin_nginx_server_name: '{{ ansible_fqdn }}'
+munin_nginx_ssl_redirect: 'https://{{ munin_nginx_server_name }}$request_uri'
+
+munin_nginx_ssl_certificate: ''
+munin_nginx_ssl_certificate_key: ''
+munin_nginx_ssl_intermediate_certificate: ''
+munin_nginx_ssl_root_certificate: ''
+
+munin_nginx_ssl_save_path: '/etc/munin/.ssl'
+munin_nginx_ssl_certificate_path: '{{ munin_nginx_ssl_save_path }}/certificate.crt'
+munin_nginx_ssl_certificate_key_path: '{{ munin_nginx_ssl_save_path }}/certificate.key'
+munin_nginx_ssl_trusted_certificate_path: '{{ munin_nginx_ssl_save_path }}/trustchain.crt'
+
 
 ##To ensure that the dynazoom functionality responsible for
 ## zooming into the generated graphs works properly on click
