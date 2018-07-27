@@ -1,6 +1,6 @@
 # Ansible Role: Install munin
 
-[![Build Status](https://travis-ci.org/tschifftner/ansible-role-munin.svg)](https://travis-ci.org/tschifftner/ansible-role-munin)
+[![Build Status](https://travis-ci.org/tschifftner/ansible-role-munin.svg?branch=master)](https://travis-ci.org/tschifftner/ansible-role-munin)
 
 Installs munin on Debian/Ubuntu linux servers.
 
@@ -69,9 +69,15 @@ $ ansible-galaxy install tschifftner.munin
         - { role: tschifftner.munin }
 
 ## Supported OS
-Ansible          | Debian Jessie    | Ubuntu 14.04    | Ubuntu 16.04    |
-:--------------: | :--------------: | :-------------: | :-------------: |
-2.1              | Yes              | Yes             | Yes             |              
+
+ - Debian 9 (Stretch)
+ - Debian 8 (Jessie)
+ - Ubuntu 18.04 (Bionic Beaver)
+ - Ubuntu 16.04 (Xenial Xerus)
+ 
+## Required ansible version
+
+Ansible 2.5+
 
 ## License
 

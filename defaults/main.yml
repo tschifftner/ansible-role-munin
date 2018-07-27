@@ -47,6 +47,7 @@ munin_nginx_ssl_certificate_path: '{{ munin_nginx_ssl_save_path }}/certificate.c
 munin_nginx_ssl_certificate_key_path: '{{ munin_nginx_ssl_save_path }}/certificate.key'
 munin_nginx_ssl_trusted_certificate_path: '{{ munin_nginx_ssl_save_path }}/trustchain.crt'
 
+munin_dhparam_size: 4096
 
 ##To ensure that the dynazoom functionality responsible for
 ## zooming into the generated graphs works properly on click

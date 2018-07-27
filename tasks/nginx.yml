@@ -30,14 +30,12 @@
     dest: '{{ munin_nginx_ssl_certificate_path }}'
   when: munin_nginx_ssl_certificate != '' and munin_nginx_ssl_intermediate_certificate != ''
 
-- name: Generate dhparam.pem for every ssl certificate
-  no_log: true
+- name: Generate dhparam file
+  openssl_dhparam:
+    path: '{{ munin_nginx_ssl_save_path }}/dhparam.pem'
+    size: '{{ munin_dhparam_size }}'
   notify: reload nginx
-  shell: openssl dhparam 2048 -out {{ munin_nginx_ssl_save_path }}/dhparam.pem
-  args:
-    creates: '{{ munin_nginx_ssl_save_path }}/dhparam.pem'
-  async: 120
-  tags: ['skip_ansible_lint']
+  changed_when: false
 
 - name: Ensure nginx vhost is linked
   template:
