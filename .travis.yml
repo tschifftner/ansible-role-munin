@@ -30,9 +30,6 @@ script:
   # Ensure munin user exists
   - ${DOCKER} cat /etc/passwd | grep 'munin:x:'
 
-  - ${DOCKER} systemctl --no-pager status munin | grep 'munin.service; enabled'
-  - ${DOCKER} systemctl --no-pager status munin | grep 'running'
-
   # Ensure password protection
   - ${DOCKER} cat /etc/munin/.htpasswd | grep 'munin:'
 
@@ -55,7 +52,7 @@ after_failure:
   - ${DOCKER} curl http://munin:munin@localhost:8012/
   - ${DOCKER} cat /etc/munin/.htpasswd
   - ${DOCKER} iptables -L
-  - ${DOCKER} echo exit | telnet localhost 4949
+  - ${DOCKER} /etc/ansible/roles/role_under_test/tests/telnet.sh 4949
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
