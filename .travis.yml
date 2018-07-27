@@ -14,15 +14,6 @@ env:
   - distro: ubuntu1804
   - distro: ubuntu1604
 
-  - distro: debian9
-    playbook: test-geoip.yml
-  - distro: debian8
-    playbook: test-geoip.yml
-  - distro: ubuntu1804
-    playbook: test-geoip.yml
-  - distro: ubuntu1604
-    playbook: test-geoip.yml
-
 script:
   # Configure test script so we can run extra tests after playbook is run.
   - export container_id=$(date +%s)
@@ -39,15 +30,16 @@ script:
   # Ensure munin user exists
   - ${DOCKER} cat /etc/passwd | grep 'munin:x:'
 
-  - ${DOCKER} systemctl --no-pager status munin-node | grep 'fpm.service; enabled'
-  - ${DOCKER} systemctl --no-pager status munin-node | grep 'running'
+  - ${DOCKER} systemctl --no-pager status munin | grep 'munin.service; enabled'
+  - ${DOCKER} systemctl --no-pager status munin | grep 'running'
 
   # Ensure password protection
   - ${DOCKER} cat /etc/munin/.htpasswd | grep 'munin:'
 
-  # Ensure munin is listening
-  - ${DOCKER} echo exit | telnet localhost 4949 | grep 'Connected to localhost'
-  - echo exit | telnet localhost 80 | grep 'Connected to localhost'
+  # Ensure munin and nginx are listening
+  - ${DOCKER} /etc/ansible/roles/role_under_test/tests/telnet.sh 4949
+  - ${DOCKER} /etc/ansible/roles/role_under_test/tests/telnet.sh 80
+  - ${DOCKER} /etc/ansible/roles/role_under_test/tests/telnet.sh 8012
 
   # Run munin-cron
   - ${DOCKER} /etc/ansible/roles/role_under_test/tests/munin-cron.sh
@@ -57,12 +49,13 @@ script:
 after_failure:
   - ${DOCKER} munin-node -v
   - ${DOCKER} systemctl --no-pager status munin
+  - ${DOCKER} systemctl --no-pager status munin-node
   - ${DOCKER} cat /etc/nginx/sites-enabled/munin-node.conf
   - ${DOCKER} curl http://localhost/
   - ${DOCKER} curl http://munin:munin@localhost:8012/
   - ${DOCKER} cat /etc/munin/.htpasswd
   - ${DOCKER} iptables -L
-  - ${DOCKER} telnet localhost 4949
+  - ${DOCKER} echo exit | telnet localhost 4949
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
