@@ -20,4 +20,4 @@
       changed_when: false # fix idempotence
 
   roles:
-    - tschifftner.munin-node
+    - tschifftner.munin_node
