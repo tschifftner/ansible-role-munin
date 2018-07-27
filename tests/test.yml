@@ -7,6 +7,14 @@
     munin_nginx_server_name: 'localhost'
     munin_admin_user: munin
     munin_admin_password: munin
+    munin_dhparam_size: 32
+    simulate_cronjob: false # Travis is supposed to do this
+
+  post_tasks:
+    - name: Simulate cronjob
+      command: /etc/ansible/roles/role_under_test/tests/munin-cron.sh
+      changed_when: false
+      when: simulate_cronjob
 
   roles:
-    - ansible-role-munin
+    - role_under_test
